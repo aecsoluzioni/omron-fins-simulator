@@ -1,53 +1,52 @@
-# OMRON FINS SIMULATOR
+## SIMULATORE DI PINNE OMRON.
 
-## これは何
+## Cos'è questo.
 
-これはRubyの動作するPCを仮想PLCとして動作させるためのスクリプトです。
-PLCとFINSプロトコルを通じて通信するプログラムのデバッグのために実装しました。
+Si tratta di uno script per eseguire un PC con Ruby come PLC virtuale.
+È stato implementato per eseguire il debug di un programma che comunica con un PLC tramite il protocollo FINS.
 
-起動と同時に指定ポート(デフォルト:9600)でUDPソケットをListenし、FINSプロトコルによる要求に対して応答を返します。
-現時点ではDMエリアの取得と書き込み、及び日時の取得にのみ対応しています。またTCPには対応しておりません。
+Appena avviato, si mette in ascolto su un socket UDP sulla porta specificata (default: 9600) e restituisce una risposta a una richiesta tramite il protocollo FINS.
+Attualmente sono supportate solo l'acquisizione e la scrittura dell'area DM e l'acquisizione di data e ora. Il protocollo TCP non è supportato.
 
-## 実行環境
+## Ambiente di esecuzione.
 
-* `Ruby 1.8` 以上。Linux, MacOSXで検証済み。Windowsでも動作すると思います。
-* 本スクリプトを稼働させるPCと通信するPCがUDPの9600番ポート（または `--port` で指定したポート）で、お互いに通信可能なネットワーク環境であること。
+* `Ruby 1.8` o superiore, testato su Linux, MacOSX, funzionerà anche su Windows.
+* Il PC che esegue questo script e il PC comunicante devono trovarsi in un ambiente di rete in cui possono comunicare tra loro sulla porta UDP 9600 (o sulla porta specificata con `--port`).
 
-## インストール
+## Installazione.
 
-このプロジェクトを手元に `git clone` してください。
+Si prega di clonare `git` questo progetto a mano.
 
 ```
 $ git clone https://github.com/hiroeorz/omron-fins-simulator.git
 ```
 
-実行に必要なファイルは `omron_plc.rb` のみですので、これをそのまま実行するか、または適当なディレクトリにコピーして実行してください。
+L'unico file da eseguire è `omron_plc.rb`, che può essere eseguito così com'è o copiato in una cartella adatta ed eseguito.
 
 ```
-$ ruby omron_plc.rb --address=<自身のIPアドレス> --port=<待ち受けポート番号>
+$ ruby omron_plc.rb --address=<il vostro indirizzo IP> --port=<porta>
 ```
 
-
-実行例:
+Esempio di esecuzione:.
 
 ```
 $ cd omron-fins-simulator
 $ ruby omron_plc.rb --address=192.168.0.6 --port=9600
 ```
 
-その他、幾つかのオプションがあります。
+Altre opzioni sono.
 
 ```
 $ ruby omron_plc.rb --address=192.168.0.6 --port=9600 --count_up_dm=5095 --countup_interval=5 --load_file=/tmp/dm.yaml
 ```
 
-* `--address` : 自身のIPアドレス。デフォルトは `127.0.0.1`
-* `--port` : ポート番号。デフォルトは `9600`
-* `--count_up_dm` : 自動カウントアップするDM番号を指定する。カンマ区切りで複数指定できる。
-    * 複数指定の例: `--count_up_dm=1,2,3`
-* `--countup_interval` : 自動カウントアップするインターバルを指定。デフォルトは5秒
-* `--load_file` : 起動時に読み込むDMの設定ファイル。指定しなければ、全てのDMは初期状態で `0`
-    * 設定ファイルのフォーマットはYAMLで、キーがDM番号、値がDMの値
+* `--address` : proprio indirizzo IP. Il valore predefinito è `127.0.0.1`.
+* `--port` : numero di porta. Il valore predefinito è `9600`.
+* `--count_up_dm` : Specifica il numero di DM da contare automaticamente. È possibile specificare più numeri separandoli con delle virgole.
+    * Esempio di specificazione multipla: `--count_up_dm=1,2,3`.
+* `--countup_interval` : Specifica l'intervallo per il conteggio automatico. L'impostazione predefinita è 5 secondi.
+* `--load_file` : file di configurazione del DM da caricare all'avvio. Se non viene specificato, tutti i DM sono inizialmente `0`.
+    * Il formato del file di configurazione è YAML, dove la chiave è il numero del DM e il valore è il valore del DM.
 
         ``` 
         3: 0
@@ -57,9 +56,9 @@ $ ruby omron_plc.rb --address=192.168.0.6 --port=9600 --count_up_dm=5095 --count
         103: 0x10
         ``` 
 
-### 対話形式での値の設定、取得
+### Imposta e recupera i valori in modo interattivo.
 
-起動すると、指定ポートでUDPパケットの受付を開始し、コンソール上では入力待ちの状態となります。
+Quando viene attivato, il sistema inizia ad accettare pacchetti UDP sulla porta specificata e attende un input sulla console.
 
 ```
 $ ruby omron_plc.rb --address=192.168.0.6 --port=9600
@@ -79,37 +78,37 @@ EXIT COMMAND       : > exit
 > 
 ```
 
-上記のように、 `>` が表示されると、幾つかのコマンドが使用可能となります。
+Quando viene visualizzato `>`, come sopra, sono disponibili diversi comandi.
 
-#### DMエリアへの値の設定
-
-```
-> set <dm number>, <value>
-```
-
-#### DMエリアの値の読み込み
+#### Impostazione dei valori nell'area DM.
 
 ```
-> get <dm number>
-<値の表示>
+> set <numero DM>, <valore>
 ```
 
-#### 複数DMエリアの値の一括読み込み
+#### Leggere il valore di un'area DM.
 
 ```
-> get_list <dm number>, <count>
-<DM番地1番目> : 値
-<DM番地2番目> : 値
-<DM番地3番目> : 値
+> get <numero DM>
+<valore di visualizzazione>
 ```
 
-#### プログラムの終了
+#### Leggere i valori di più aree DM contemporaneamente
+
+```
+> get_list <dm numero>, <count>
+<dm numero 1> : valore
+<DM numero 2> : valore
+<Numero 3> : valore
+```
+
+#### Fine del programma
 
 ```
 > exit
 ```
 
-#### 実行例
+#### Esempio di esecuzione
 
 ```
 $ ruby omron_plc.rb --address=192.168.0.6 --port=9600
@@ -144,4 +143,19 @@ ok
 > exit
 
 $
+```
+
+## Docker
+
+Aggiunto un Dockerfile per permettere esecuzione tramite container
+Per eseguire build immagine
+
+```
+docker build -t omron/plc-simulator .
+```
+
+Per eseguire container
+
+```
+docker run -it -p 9600:9600 omron/plc-simulator
 ```

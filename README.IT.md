@@ -144,3 +144,18 @@ ok
 
 $
 ```
+
+## Docker
+
+Aggiunto un Dockerfile per permettere esecuzione tramite container
+Per eseguire build immagine
+
+```
+docker build -t omron/plc-simulator .
+```
+
+Per eseguire container
+
+```
+docker run -it -p 9600:9600 omron/plc-simulator
+```

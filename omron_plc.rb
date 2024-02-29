@@ -3,7 +3,7 @@
 ##################################################################
 # exp:
 #
-# $ ruby omron_plc.rb # default 127:0:0:1:9600
+# $ ruby omron_plc.rb # default 0:0:0:0:9600
 #
 # $ ruby omron_plc.rb --address=172.16.15.35 --port=9602
 #
@@ -23,7 +23,7 @@ module OMRON
     FINS_HEADER_SIZE = 10
     FINS_CODE_SIZE = 2
 
-    def initialize(host = "127.0.0.1", port = 9600, params = {})
+    def initialize(host = "0.0.0.0", port = 9600, params = {})
       @host = host
       @port = port
       @sock = nil
@@ -364,7 +364,7 @@ end
 
 
 if __FILE__ == $0
-  host = "127.0.0.1"
+  host = "0.0.0.0"
   port = 9600
   count_up_dm_list = []
   countup_interval = 5

@@ -1,3 +1,4 @@
+# OMRON FINS SIMULATOR
 **Introduzione**
 
 Questo script permette al tuo PC con Ruby di funzionare come un PLC virtuale. È stato implementato per il debug di programmi che comunicano con PLC tramite il protocollo FINS.

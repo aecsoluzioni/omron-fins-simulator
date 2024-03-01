@@ -53,7 +53,7 @@ $ ruby omron_plc.rb --address=192.168.0.6 --port=9600 --count_up_dm=5095 --count
         101: 21
         102: 0xff
         103: 0x10
-        ``` 
+        ```
 
 **Impostazione e acquisizione di valori in modalità interattiva**
 

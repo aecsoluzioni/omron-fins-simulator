@@ -74,7 +74,7 @@ module OMRON
       end
     end
 
-    # UDPサーバーを別スレッドで開始する
+    # Start UDP server in a separate thread
     def spawn_upd_server_thread(host, port)
       Thread.start {
         @sock = UDPSocket.open()
@@ -108,7 +108,7 @@ module OMRON
       }
     end
 
-    # 特定のDMの自動カウントアップを別スレッドで開始する
+    # Start automatic count-up of specific DMs in a separate thread
     def spawn_countup_thread(interval, dmno_list)
       Thread.start {
         val = 0
@@ -123,19 +123,19 @@ module OMRON
       }
     end
 
-    # コマンド用
+    # For commands
     def get(dmno)
       puts dm_value(dmno, 1)
     end
 
-    # コマンド用
+    # For commands
     def get_list(dmno, count)
       dm_value(dmno, count).each_with_index do |val, i|
         puts "#{dmno + i} : #{val}"
       end
     end
 
-    # コマンド用
+    # For commands
     def set(dmno, val)
       write_dm_value(dmno, val)
       puts "ok"
